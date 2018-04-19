@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".activity.NewActivity">
+
+        <com.srainbow.androidtest.widget.VolumeView
+            android:id="@+id/vl_new_volume"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_new_test1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="上方绘制"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <Button
+            android:id="@+id/bn_new_test3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="点击无效"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test5"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="绘制区域操作"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test3"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="全屏操作"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test1"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test1"/>
+
+        <Button
+            android:id="@+id/bn_new_test4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="点击定位"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test3"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test3"/>
+
+        <Button
+            android:id="@+id/bn_new_test6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="中间绘制"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test5"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test5"/>
+
+        <Button
+            android:id="@+id/bn_new_test7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="下方绘制"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test6"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test6"/>
+
+        <Button
+            android:id="@+id/bn_new_test9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="左右留白"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="宽度充满"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test9"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test9"/>
+
+        <Button
+            android:id="@+id/bn_new_test11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="随机背景色"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test9"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="随机前景色"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test11"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test11"/>
+
+        <Button
+            android:id="@+id/bn_new_test13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="随机小球颜色"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test12"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test12"/>
+
+        <SeekBar
+            android:id="@+id/sb_new_test1"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_new_test1"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="SeekBar: 0"
+            app:layout_constraintBottom_toTopOf="@+id/sb_new_test1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_new_test2"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Volume: 0"
+            app:layout_constraintBottom_toTopOf="@+id/sb_new_test1"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="setPercent不回调"
+            app:layout_constraintBottom_toTopOf="@+id/bn_new_test11"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/bn_new_test15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="setPercent立即回调"
+            app:layout_constraintBottom_toBottomOf="@+id/bn_new_test14"
+            app:layout_constraintStart_toEndOf="@+id/bn_new_test14"/>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
