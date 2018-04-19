@@ -68,7 +68,13 @@ public class VolumeView extends View {
     private float[] mLastPoint;
     private boolean isM = false; //是否小球坐标x已经到达最小或最大值
     private State state = State.SILENCE;
-    private int mViewGravity = Gravity.BOTTOM;
+    /**
+     * 绘制区域显示位置（默认居中CENTER）<br>
+     * TOP - 绘制在View的最上面 <br>
+     * CENTER - 绘制在View的中间 <br>
+     * BOTTOM - 绘制在View的最下面 <br>
+     */
+    private int mViewGravity = Gravity.CENTER;
     private Context mContext; //上下文对象
     private int mWidth; //控件宽度
     private int mHeight; //控件高度
@@ -275,6 +281,11 @@ public class VolumeView extends View {
     }
 
     @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
@@ -324,6 +335,7 @@ public class VolumeView extends View {
                     }
                 }
                 state = State.SILENCE;
+                performClick();
                 break;
         }
         return super.onTouchEvent(event);
