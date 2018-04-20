@@ -3,7 +3,11 @@
     <declare-styleable name="VolumeView">
         <attr name="touchExpandable" format="boolean"/>
         <attr name="clickValid" format="boolean"/>
-        <attr name="viewGravity" format="integer"/>
+        <attr name="viewGravity" format="enum">
+            <enum name="TOP" value="48"/>
+            <enum name="CENTER" value="17"/>
+            <enum name="BOTTOM" value="80"/>
+        </attr>
         <attr name="fullWidth" format="boolean"/>
         <attr name="colorBackground" format="color"/>
         <attr name="colorForeground" format="color"/>
