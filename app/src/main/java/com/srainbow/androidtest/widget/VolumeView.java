@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.srainbow.androidtest.inter.IProgressListener;
+import com.srainbow.androidtest.util.ScreenUtil;
 
 /**
  * Created by SRainbow on 2018/4/18.<br>
@@ -60,6 +61,7 @@ public class VolumeView extends View {
     }
 
     private final static int sDefaultViewHeight = 25; //默认绘制高度（dp）
+    private final static int sMinViewHeight = 10; //最小绘制高度（dp）
     private final static int sDefaultColorBackground = Color.parseColor("#021838");
     private final static int sDefaultColorForeground = Color.parseColor("#91B73D");
     private final static int sDefaultColorBall = Color.parseColor("#3C8FF3");
@@ -81,7 +83,10 @@ public class VolumeView extends View {
     private int mViewWidth; //绘制宽度
     private int mViewHeight; //绘制高度
     private int mRadius; //小球半径
-    private int mBlank; //留白距离
+    /**
+     * 左右留白距离，默认为绘制高度
+     */
+    private int mBlank;
     private Paint mPaintBackground; //背景画笔
     private int mColorBackground; //背景色
     private Path mPathBackground; //背景Path
@@ -164,16 +169,16 @@ public class VolumeView extends View {
         mWidth = w;
         mHeight = h;
         mViewWidth = w;
-        //如果绘制高度比控件高度大，则改为控件高度
-        if (mHeight < mViewHeight) mViewHeight = mHeight;
         mRegionGlobal = new Region(-w, -h, w, h);
-        mRadius = mViewHeight;
-        mBlank = mRadius;
-
         mInvertMatrix.reset();
+        //根据显示位置判断最大绘制区域
+        setViewHeightByGravity(mViewGravity);
+        mBlank = mViewHeight;
+        //设置背景Path
         setBackgroundPath();
     }
 
+    //设置背景path（设置显示区域是否占满宽度时需要改变）
     private void setBackgroundPath() {
         mPathBackground.reset();
         if (mFullWidth) {
@@ -189,6 +194,32 @@ public class VolumeView extends View {
         mRegionView.setPath(mPathBackground, mRegionGlobal);
     }
 
+    //根据绘制位置设置绘制高度
+    private void setViewHeightByGravity(int gravity) {
+        switch (gravity) {
+            case Gravity.TOP: //上方
+            case Gravity.CENTER: //居中
+            case Gravity.BOTTOM: //下方
+                //如果控件高度比绘制高度小，则绘制高度改为控件高度
+                if (mHeight < mViewHeight) mViewHeight = mHeight;
+                break;
+        }
+//        switch (gravity) {
+//            case Gravity.TOP: //上方
+//                //如果控件高度比绘制高度小，则绘制高度改为控件高度
+//                if (mHeight < mViewHeight) mViewHeight = mHeight;
+//                break;
+//            case Gravity.CENTER: //居中
+//                //如果控件高度比绘制高度小，则绘制高度改为控件高度
+//                if (mHeight < mViewHeight) mViewHeight = mHeight;
+//                break;
+//            case Gravity.BOTTOM: //下方
+//                //如果控件高度比绘制高度小，则绘制高度改为控件高度
+//                if (mHeight < mViewHeight) mViewHeight = mHeight;
+//                break;
+//        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -200,7 +231,7 @@ public class VolumeView extends View {
                 canvas.translate(0, mViewHeight);
                 break;
             case Gravity.CENTER:
-                canvas.translate(0, mHeight / 2);
+                canvas.translate(0, (mHeight + mViewHeight) / 2);
                 break;
             case Gravity.BOTTOM:
                 canvas.translate(0, mHeight);
@@ -215,7 +246,7 @@ public class VolumeView extends View {
         if (mFullWidth) {
             drawForeground(canvas, mPointX);
         } else {
-            if (mPointX > mRadius) {
+            if (mPointX > mBlank) {
                 drawForeground(canvas, mPointX);
             }
         }
@@ -417,6 +448,7 @@ public class VolumeView extends View {
     //设置在控件中的显示位置
     public void setViewGravity(int gravity) {
         this.mViewGravity = gravity;
+        setViewHeightByGravity(gravity);
         //重新设置好显示位置后需要重置矩阵
         mInvertMatrix.reset();
     }
@@ -474,5 +506,28 @@ public class VolumeView extends View {
     //手动设置进度时是否进行回调
     public void setPromptly(boolean promptly) {
         this.mPromptly = promptly;
+    }
+
+    //设置左右留白距离
+    public void setBlankHeight(int dpValue) {
+        //保证最低绘制高度
+        if (dpValue < 0) dpValue = 0;
+        this.mBlank = ScreenUtil.getInstance().dp2px(mContext, dpValue);
+        //修改背景绘制区域
+        setBackgroundPath();
+        invalidate();
+    }
+
+    //设置绘制高度
+    public void setViewHeight(int dpValue) {
+        //保证有个最低显示高度
+        if (dpValue < sMinViewHeight)
+            mViewHeight = ScreenUtil.getInstance().dp2px(mContext, sMinViewHeight);
+        else
+            this.mViewHeight = ScreenUtil.getInstance().dp2px(mContext, dpValue);
+        setViewHeightByGravity(mViewGravity);
+        //修改背景绘制区域
+        setBackgroundPath();
+        invalidate();
     }
 }
