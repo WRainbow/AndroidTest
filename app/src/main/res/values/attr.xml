@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VolumeView">
+        <attr name="touchExpandable" format="boolean"/>
+        <attr name="clickValid" format="boolean"/>
+        <attr name="viewGravity" format="integer"/>
+        <attr name="fullWidth" format="boolean"/>
+        <attr name="colorBackground" format="color"/>
+        <attr name="colorForeground" format="color"/>
+        <attr name="colorBall" format="color"/>
+        <attr name="promptly" format="boolean"/>
+        <attr name="blankDistance" format="dimension"/>
+        <attr name="viewHeight" format="dimension"/>
+        <attr name="percent" format="integer"/>
+    </declare-styleable>
+</resources>

@@ -1,6 +1,7 @@
 package com.srainbow.androidtest.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.srainbow.androidtest.R;
 import com.srainbow.androidtest.inter.IProgressListener;
 import com.srainbow.androidtest.util.ScreenUtil;
 
@@ -67,6 +69,7 @@ public class VolumeView extends View {
     private final static int sDefaultColorBall = Color.parseColor("#3C8FF3");
     private static float mDensity;
     private int mPointX = 0;
+    private int percent = 0;
     private float[] mLastPoint;
     private boolean isM = false; //是否小球坐标x已经到达最小或最大值
     private State state = State.SILENCE;
@@ -109,11 +112,30 @@ public class VolumeView extends View {
 
     public VolumeView(Context context) {
         super(context);
+        initFinalData(context);
+        initData();
         init(context);
     }
 
     public VolumeView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initFinalData(context);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VolumeView);
+        mColorBackground = array.getColor(R.styleable.VolumeView_colorBackground, sDefaultColorBackground);
+        mColorForeground = array.getColor(R.styleable.VolumeView_colorForeground, sDefaultColorForeground);
+        mColorBall = array.getColor(R.styleable.VolumeView_colorBall, sDefaultColorBall);
+        mViewGravity = array.getInteger(R.styleable.VolumeView_viewGravity, Gravity.CENTER);
+
+        //先获取mViewHeight在获取mBlank，因为mBlank默认值为mViewHeight
+        mViewHeight = (int) array.getDimension(R.styleable.VolumeView_viewHeight, sDefaultViewHeight * mDensity);
+        mBlank = (int) array.getDimension(R.styleable.VolumeView_blankDistance, mViewHeight);
+
+        mFullWidth = array.getBoolean(R.styleable.VolumeView_fullWidth, false);
+        percent = array.getInteger(R.styleable.VolumeView_percent, 0);
+        mPromptly = array.getBoolean(R.styleable.VolumeView_promptly, true);
+        mTouchExpandable = array.getBoolean(R.styleable.VolumeView_touchExpandable, false);
+        mClickValid = array.getBoolean(R.styleable.VolumeView_clickValid, false);
+        array.recycle();
         init(context);
     }
 
@@ -121,23 +143,25 @@ public class VolumeView extends View {
     private void init(Context context) {
 //        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         this.mContext = context;
-        initData();
         initPath();
         initPaint();
         mRegionView = new Region();
         mInvertMatrix = new Matrix();
     }
 
-    //初始化数据
+    //初始化数据（无法用户自定义的数据，在initData前调用）
+    private void initFinalData(Context context) {
+        mDensity = context.getResources().getDisplayMetrics().density;
+        mViewWidth = 0;
+        mLastPoint = new float[2];
+    }
+
+    //初始化数据（用户可以自定义的数据）
     private void initData() {
-        mDensity = mContext.getResources().getDisplayMetrics().density;
         mColorBackground = sDefaultColorBackground;
         mColorForeground = sDefaultColorForeground;
         mColorBall = sDefaultColorBall;
-
-        mViewHeight = (int) (sDefaultViewHeight * mDensity);
-        mViewWidth = 0;
-        mLastPoint = new float[2];
+        mViewHeight = mBlank = (int) (sDefaultViewHeight * mDensity);
     }
 
     //初始化画笔
@@ -173,7 +197,6 @@ public class VolumeView extends View {
         mInvertMatrix.reset();
         //根据显示位置判断最大绘制区域
         setViewHeightByGravity(mViewGravity);
-        mBlank = mViewHeight;
         //设置背景Path
         setBackgroundPath();
     }
@@ -243,6 +266,8 @@ public class VolumeView extends View {
             canvas.getMatrix().invert(mInvertMatrix);
         }
         drawBackGround(canvas);
+        //根据percent计算mPointX而不直接使用mPointX，因为初始化时设置的是percent
+        mPointX = getPointX(percent);
         if (mFullWidth) {
             drawForeground(canvas, mPointX);
         } else {
@@ -352,16 +377,18 @@ public class VolumeView extends View {
                 if (formatPointX()) {
                     return false;
                 }
+                percent = getPercent(getNow(), getSum());
                 if (mProgressListener != null)
-                    mProgressListener.progress(getPercent(getNow(), getSum()));
+                    mProgressListener.progress(percent);
                 invalidate();
                 return true;
             case MotionEvent.ACTION_UP:
                 if (state == State.READY) {
                     mPointX = (int) mLastPoint[0];
                     if (!formatPointX()) {
+                        percent = getPercent(getNow(), getSum());
                         if (mProgressListener != null)
-                            mProgressListener.progress(getPercent(getNow(), getSum()));
+                            mProgressListener.progress(percent);
                         invalidate();
                     }
                 }
@@ -387,8 +414,9 @@ public class VolumeView extends View {
             if (mPointX > mViewWidth - blank) mPointX = mViewWidth - blank;
             //如果上一次mPointX坐标已经达到了最小值或者最大值，则不进行重绘（不知道算不算提高性能QAQ...）
             if (!isM) {
+                percent = getPercent(getNow(), getSum());
                 if (mProgressListener != null)
-                    mProgressListener.progress(getPercent(getNow(), getSum()));
+                    mProgressListener.progress(percent);
                 invalidate();
             }
             isM = true;
@@ -399,8 +427,22 @@ public class VolumeView extends View {
         }
     }
 
+    //根据当前位置和总距离计算百分比
     private int getPercent(int now, int sum) {
-        return (int) Math.round(now * 1.0 / sum * 100);
+        int p = (int) Math.round(now * 1.0 / sum * 100);
+        if (p < 0) {
+            return 0;
+        }
+        if (p > 100) {
+            return 100;
+        }
+        return p;
+    }
+
+    //根据当前进度获取小球位置
+    private int getPointX(int percent) {
+        int now = (int) (percent * 1.0 / 100 * getSum());
+        return mFullWidth ? now : mBlank + now;
     }
 
     //获取当前绘制宽度
@@ -408,6 +450,7 @@ public class VolumeView extends View {
         return mFullWidth ? mViewWidth : mViewWidth - mBlank * 2;
     }
 
+    //获取当前小球在绘制区域中的位置
     private int getNow() {
         int now;
         if (mFullWidth) {
@@ -461,7 +504,8 @@ public class VolumeView extends View {
 
     //显示View（在使用代码设置属性后需要调用此方法生效）
     public void show() {
-        if (mProgressListener != null) mProgressListener.progress(getPercent(getNow(), getSum()));
+//        percent = getPercent(getNow(), getSum());
+//        if (mProgressListener != null) mProgressListener.progress(percent);
         invalidate();
     }
 
@@ -484,6 +528,7 @@ public class VolumeView extends View {
     public void setPercent(int percent) {
         if (percent < 0) percent = 0;
         if (percent > 100) percent = 100;
+        this.percent = percent;
         if (mFullWidth) {
             mPointX = (int) (percent * 1.0 / 100 * mViewWidth);
         } else {
@@ -496,6 +541,11 @@ public class VolumeView extends View {
             mProgressListener.progress(percent);
         }
         invalidate();
+    }
+
+    //获取当前进度
+    public int getPercent() {
+        return percent;
     }
 
     //设置进度条监听
@@ -522,9 +572,9 @@ public class VolumeView extends View {
     public void setViewHeight(int dpValue) {
         //保证有个最低显示高度
         if (dpValue < sMinViewHeight)
-            mViewHeight = ScreenUtil.getInstance().dp2px(mContext, sMinViewHeight);
+            mViewHeight = (int) (sMinViewHeight * mDensity);
         else
-            this.mViewHeight = ScreenUtil.getInstance().dp2px(mContext, dpValue);
+            this.mViewHeight = (int) (dpValue * mDensity);
         setViewHeightByGravity(mViewGravity);
         //修改背景绘制区域
         setBackgroundPath();
