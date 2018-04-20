@@ -45,6 +45,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.bn_new_test13).setOnClickListener(this);
         findViewById(R.id.bn_new_test14).setOnClickListener(this);
         findViewById(R.id.bn_new_test15).setOnClickListener(this);
+        findViewById(R.id.bn_new_test16).setOnClickListener(this);
+        findViewById(R.id.bn_new_test17).setOnClickListener(this);
 
     }
 
@@ -92,6 +94,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.bn_new_test15:
                 mVolume.setPromptly(true);
+                break;
+            case R.id.bn_new_test16:
+                mVolume.setBlankHeight(mSeekBar.getProgress());
+                break;
+            case R.id.bn_new_test17:
+                mVolume.setViewHeight(mSeekBar.getProgress());
                 break;
         }
         mVolume.show();
