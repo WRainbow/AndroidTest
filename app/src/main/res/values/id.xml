@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="STATUS_NO_DATA" type="id"/>
+    <item name="STATUS_NO_NET" type="id"/>
+    <item name="STATUS_LOAD_ERROR" type="id"/>
+</resources>

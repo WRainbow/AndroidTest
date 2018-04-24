@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- VolumeView自定义属性 -->
     <declare-styleable name="VolumeView">
         <attr name="touchExpandable" format="boolean"/>
         <attr name="clickValid" format="boolean"/>
@@ -16,5 +17,15 @@
         <attr name="blankDistance" format="dimension"/>
         <attr name="viewHeight" format="dimension"/>
         <attr name="percent" format="integer"/>
+    </declare-styleable>
+
+    <!-- LoadStatusView自定义属性 -->
+    <declare-styleable name="LoadStatusView">
+        <attr name="img_no_data" format="reference"/>
+        <attr name="img_no_net" format="reference"/>
+        <attr name="img_load_error" format="reference"/>
+        <attr name="view_no_data" format="reference"/>
+        <attr name="view_no_net" format="reference"/>
+        <attr name="view_load_error" format="reference"/>
     </declare-styleable>
 </resources>
