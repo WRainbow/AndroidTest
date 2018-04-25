@@ -1,6 +1,6 @@
 # VolumeView
 VolumeView一个进度条控件，也可以视为一个音量控件，整体效果如下：<br>
-*为了看到效果就给控件加了背景*
+*为了看到效果就给控件加了背景*<br>
 ![image](https://github.com/WRainbow/Bed-Of-ScreenShot/blob/master/Gif/VolumeView.gif "VolumeView.gif")
 ### 使用
 可以直接把测试Demo中widget包下的VolumeView文件直接拷贝即可，其中在文件中涉及到的接口、工具类方法等也需要复制（也可以把涉及到的方法复制到VolumeView中）。<br>
