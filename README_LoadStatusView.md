@@ -6,6 +6,7 @@ LoadStatusView一个根据不同状态加载不同布局或图片来给用户以
 LoadStatusView主要涉及场景就是多个View切换时，控制显隐比较麻烦，单独封装之后直接调用方法即可实现，省去了很多代码逻辑。LoadStatusView还可以针对开屏广告、引导页等的切换进行设置，然后根据不同时机显示不同View
 
 *为了看到效果就给控件加了背景*
+
 ![image](https://github.com/WRainbow/Bed-Of-ScreenShot/blob/master/Gif/LoadStatusView.gif "VolumeView.gif")
 
 ### 使用
